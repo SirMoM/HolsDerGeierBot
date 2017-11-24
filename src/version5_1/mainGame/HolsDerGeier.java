@@ -2,7 +2,6 @@ package version5_1.mainGame;
 
 import java.util.ArrayList;
 
-import version5.bots.HolsDerGeierSpieler;
 
 /**
  * Beschreiben Sie hier die Klasse HolsDerGeier.

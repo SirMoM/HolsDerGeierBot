@@ -1,5 +1,7 @@
 package version5.bots;
 
+import version5_1.mainGame.HolsDerGeierSpieler;
+
 
 /**
  * Beschreiben Sie hier die Klasse Geier.

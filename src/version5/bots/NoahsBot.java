@@ -1,6 +1,9 @@
 package version5.bots;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import version5_1.mainGame.HolsDerGeierSpieler;
 
 /**
  * @author boss
@@ -10,6 +13,8 @@ public class NoahsBot extends HolsDerGeierSpieler {
 	ArrayList<Integer> meineKarten = new ArrayList<Integer>();
 	ArrayList<Integer> dieKartenDesGegners = new ArrayList<Integer>();
 
+	HashMap<Integer, Double> kartenBewertung = new HashMap<Integer, Double>();
+	
 	/**
 	 * Mit 0 = meine hoeste Karte Mit 1 = die hoeste Karte des Gegners
 	 */
@@ -132,6 +137,7 @@ public class NoahsBot extends HolsDerGeierSpieler {
 	@Override
 	public void reset() {
 		
+		intiCardValues();
 		
 		if(meineKarten.isEmpty() && dieKartenDesGegners.isEmpty()){
 			for(int i = 1; i < 16; i++){
@@ -145,6 +151,11 @@ public class NoahsBot extends HolsDerGeierSpieler {
 		}
 		dieHoechstenKarten = new int[2];
 		dieNiedrigstenKarten = new int[2];
+	}
+
+	private void intiCardValues() {
+		
+		
 	}
 
 }
