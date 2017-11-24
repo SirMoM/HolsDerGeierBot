@@ -153,9 +153,7 @@ public class NoahsBot extends HolsDerGeierSpieler {
 		dieNiedrigstenKarten = new int[2];
 	}
 
-	private void intiCardValues() {
-		
-		
+	private void intiCardValues() {		
 	}
 
 }
