@@ -12,22 +12,26 @@ import version5_1.mainGame.HolsDerGeierSpieler;
 public class NoahsBot extends HolsDerGeierSpieler {
 	ArrayList<Integer> meineKarten = new ArrayList<Integer>();
 	ArrayList<Integer> dieKartenDesGegners = new ArrayList<Integer>();
-
+	/**
+	 * < <b>K</b>ey, <b>V</b>alue>
+	 * <p>
+	 * @param K = Karte
+	 * @param V = Mein Wert
+	 */
 	HashMap<Integer, Double> kartenBewertung = new HashMap<Integer, Double>();
 	
 	/**
-	 * Mit 0 = meine hoeste Karte Mit 1 = die hoeste Karte des Gegners
+	 * Mit dem Index 0 = meine hoeste Karte Mit <p>
+	 * Mit dem Index 1 = die hoeste Karte des Gegners
 	 */
 	int[] dieHoechstenKarten = new int[2];
 
 	/**
-	 * Mit 0 = meine niedrigste Karte Mit 1 = die niedrigste Karte des Gegners
+	 * Mit dem Index 0 = meine niedrigste Karte Mit <p>
+	 * Mit dem Index 1 = die niedrigste Karte des Gegners
 	 */
 	int[] dieNiedrigstenKarten = new int[2];
 
-	/**
-	 * 
-	 */
 	public NoahsBot() {
 		super();
 	}
@@ -113,7 +117,7 @@ public class NoahsBot extends HolsDerGeierSpieler {
 		System.out.println("		Meine gespielte Karte: " + getDieHöchstenKarten()[0]);
 		dieZuSpielendeKarte = getDieHöchstenKarten()[0];
 		meineKarten.remove(dieZuSpielendeKarte - 1);
-		return dieZuSpielendeKarte;
+		return Integer.valueOf(kartenBewertung.get(dieZuSpielendeKarte));
 	}
 
 	private int getBotNumber() {
@@ -153,7 +157,22 @@ public class NoahsBot extends HolsDerGeierSpieler {
 		dieNiedrigstenKarten = new int[2];
 	}
 
-	private void intiCardValues() {		
+	private void intiCardValues() {
+		kartenBewertung.put(-5, (double) 11);
+		kartenBewertung.put(-4, (double) 10);
+		kartenBewertung.put(-3, (double) 9);
+		kartenBewertung.put(-2, (double) 8);
+		kartenBewertung.put(-1, (double) 7);
+		kartenBewertung.put( 1, (double) 1);
+		kartenBewertung.put( 2, (double) 2);
+		kartenBewertung.put( 3, (double) 3);
+		kartenBewertung.put( 4, (double) 4);
+		kartenBewertung.put( 5, (double) 5);
+		kartenBewertung.put( 6, (double) 6);
+		kartenBewertung.put( 7, (double) 12);
+		kartenBewertung.put( 8, (double) 13);
+		kartenBewertung.put( 9, (double) 14);
+		kartenBewertung.put(10, (double) 15);
 	}
 
 }
