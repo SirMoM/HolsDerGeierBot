@@ -125,7 +125,7 @@ public class NoahsBot extends HolsDerGeierSpieler {
 
 	private int getMyBotNumber() {
 		
-		return getNummer();
+		return getHdg().letzterZug(0);
 	}
 	
 	private int getEnemyBotNumber() {
