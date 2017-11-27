@@ -40,7 +40,7 @@ public class MyLogger{
 	 * Tabellenkopf Formvorlage <p>
 	 * Punktekarte; Meine Karte; Gergner Karte; Gewonnen
 	 */
-	final public static String TABLEFORM = "%s; %s; %s; %s";
+	final public static String TABLEFORM = "%s; %s; %s; %s \n";
 
 	
 	private static DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yy hh_mm_ss");
@@ -54,6 +54,7 @@ public class MyLogger{
 	public static void log(String str) {
 		try {
 			loggerFileWriter.write("[LOG][" + LocalDateTime.now().format(df) + "] " + str + "\n");
+			loggerFileWriter.newLine();
 			loggerFileWriter.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -63,6 +64,7 @@ public class MyLogger{
 	public static void log(String str, Exception exception) {
 		try {
 			loggerFileWriter.write("[EXEPTION]" + "[" + LocalDateTime.now().format(df) + "]" + "["+ exception.getMessage() +"]" + str + "\n");
+			loggerFileWriter.newLine();
 			loggerFileWriter.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -117,11 +119,12 @@ public class MyLogger{
 	}
 
 	public static void logTable(int punktekarte, int meineKarte, int gegnerKarte, String whoWon) {
-		String tempLine = String.format(TABLESTSART, String.valueOf(punktekarte), String.valueOf(meineKarte), String.valueOf(gegnerKarte), whoWon);
-		System.out.println(tempLine);
+		String tempLine = String.format(TABLEFORM, String.valueOf(punktekarte), String.valueOf(meineKarte), String.valueOf(gegnerKarte), whoWon);
+		System.out.println("		" + tempLine);
 		try {
-			kartenCsvFileWriter = new BufferedWriter(new FileWriter(KARTENCSV));
 			kartenCsvFileWriter.write(tempLine);
+			kartenCsvFileWriter.newLine();
+			kartenCsvFileWriter.flush();
 			kartenCsvFileWriter.newLine();
 			kartenCsvFileWriter.flush();
 		} catch (Exception e) {

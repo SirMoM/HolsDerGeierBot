@@ -18,6 +18,9 @@ public class NoahsBot extends HolsDerGeierSpieler {
 	
 	int letzteKarteVonMir;
 
+	int letztePunkteKarte;
+
+	int zaehler = 0;
 	/**
 	 * < <b>K</b>ey, <b>V</b>alue>
 	 * <p>
@@ -108,8 +111,10 @@ public class NoahsBot extends HolsDerGeierSpieler {
 	public int gibKarte(int naechsteKarte) {
 		int dieZuSpielendeKarte;
 		int zuEvaluierendeKarte = naechsteKarte;
-		
-		logZug(naechsteKarte, letzteKarteVonMir, letzteKarteDesgegners);
+		if(meineKarten.size() < 15) {
+			MyLogger.log(String.valueOf(zaehler));
+			logZug(letzteKarteDesgegners, letzteKarteVonMir, letzteKarteDesgegners);
+		}
 		
 //		System.out.println("		Die letzte Karte des Gegners " + letzteKarteDesgegners);
 //		System.out.println("		Die letzte Karte von  Mir " + letzteKarteVonMir);
@@ -126,20 +131,24 @@ public class NoahsBot extends HolsDerGeierSpieler {
 		System.out.println("		Meine gespielte Karte: " + getDieHoechstenKarten()[0]);
 		dieZuSpielendeKarte = getDieHoechstenKarten()[0];
 		meineKarten.remove(dieZuSpielendeKarte - 1);
+		
+		getLetzteKarten();
+		zaehler++;
+		letztePunkteKarte = naechsteKarte;
 		return (int) dieZuSpielendeKarte;
 	}
 
 	private void fuellDieKartenDesGegners() {
 		for (int i = 1; i < 16; i++) {
 			meineKarten.add(i);
-			System.out.println("		Füll die Karten G " + i);
+			System.out.println("		Fuell die Karten G " + i);
 		}
 	}
 
 	private void fuellMeineKarten() {
 		for (int i = 1; i < 16; i++) {
 			meineKarten.add(i);
-			System.out.println("		Füll die Karten I " +i);
+			System.out.println("		Fuell die Karten I " +i);
 		}
 	}
 
@@ -180,18 +189,22 @@ public class NoahsBot extends HolsDerGeierSpieler {
 		kartenBewertung.put(10, (double) 15);
 	}
 
-	private void logZug(int punkteKarte, int meineKarte, int gergnerKarte) {
-		MyLogger.logTable(punkteKarte, meineKarte, gergnerKarte, whoWon(punkteKarte) );
+	private void logZug(int punkteKarte, int meineKarte, int gegnerKarte) {
+		MyLogger.log("Meine Karte: " + meineKarte);
+		MyLogger.log("Gegner Karte: " + gegnerKarte);
+		MyLogger.logTable(letztePunkteKarte, meineKarte, gegnerKarte, whoWon(punkteKarte) );
 	}
 	
 	private void getLetzteKarten() {
-		letzteKarteVonMir = getHdg().letzterZug(this.getNummer());
-		
-		if(getHdg().letzterZug(this.getNummer()) == 0) {
+		if(getHdg().letzterZug(this.getNummer()) != -99 || getHdg().letzterZug(1) != -99) {
+			System.out.println("		mein bot: " + getHdg().letzterZug(this.getNummer()));
+			System.out.println("		1: " + getHdg().letzterZug(1));
+
+			letzteKarteVonMir = getHdg().letzterZug(this.getNummer());
 			letzteKarteDesgegners = getHdg().letzterZug(1);
-		}else {
-			letzteKarteDesgegners = getHdg().letzterZug(0);
 		}
+		
+
 	}
 	
 	private String whoWon(int punkteKarte){

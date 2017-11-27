@@ -68,7 +68,7 @@ public class HolsDerGeier {
 	}
 
 	/**
-	 * Setzt das ganze Spiel zurück
+	 * Setzt das ganze Spiel zurueck
 	 */
 	private void reset() {
 		punkte = 0;
@@ -83,7 +83,7 @@ public class HolsDerGeier {
 	}
 
 	public void initBots(HolsDerGeierSpieler bot1, HolsDerGeierSpieler bot2) {
-		// Hier wird das Bot Array bestückt
+		// Hier wird das Bot Array bestueckt
 		bots = new HolsDerGeierSpieler[2];
 		bots[0] = bot1;
 		bots[1] = bot2;

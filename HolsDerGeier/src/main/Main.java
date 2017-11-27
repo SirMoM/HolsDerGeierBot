@@ -27,7 +27,7 @@ public class Main {
 		TestBot 				xBot = new TestBot();
 		
 		HolsDerGeier spiel = new HolsDerGeier();
-		spiel.initBots(xBot, bot1);
+		spiel.initBots(aBotToRuleThemAll, bot1);
 		try {
 			spiel.ganzesSpiel();
 		} catch (Exception e) {
