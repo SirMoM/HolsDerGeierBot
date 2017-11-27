@@ -34,7 +34,7 @@ public class IntelligentererGeier extends HolsDerGeierSpieler {
     
     public int gibKarte(int naechsteKarte) {
        int ret=-99;
-       int letzteKarteGegner=letzterZug();
+       int letzteKarteGegner = letzterZug();
        if (letzteKarteGegner!=-99)
           vomGegnerNochNichtGelegt.remove(vomGegnerNochNichtGelegt.indexOf(letzteKarteGegner));
        // L�sche dieser Karte

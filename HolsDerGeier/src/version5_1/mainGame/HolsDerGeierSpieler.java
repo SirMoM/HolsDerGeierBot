@@ -8,17 +8,18 @@ public abstract class HolsDerGeierSpieler {
 
     
     public int getNummer() {
-        return nummer;
+        System.out.println(this.nummer);
+    	return this.nummer;
     }
     public HolsDerGeier getHdg()  {
         return hdg;
     }
 
     public int letzterZug() {
-        return hdg.letzterZug(nummer);
+        return hdg.letzterZug(this.nummer);
     }
     
-    public void register(HolsDerGeier hdg,int nummer) {
+    public void register(HolsDerGeier hdg, int nummer) {
         this.hdg=hdg;
         this.nummer=nummer;
     }

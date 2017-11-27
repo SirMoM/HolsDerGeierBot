@@ -1,27 +1,21 @@
 package version5_1.mainGame;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
- * Beschreiben Sie hier die Klasse HolsDerGeier.
  * 
- * @author (Ihr Name)
- * @version (eine Versionsnummer oder ein Datum)
  */
 
 public class HolsDerGeier {
-	/**
-	 * Hier definieren Sie die Attribute Ihrer Klasse Beispiel: private <Typ>
-	 * Name_des_Attributs
+	/** Die Geier- und Maeusekarten <p>
+	 *	<b> Die Punkte Katen </b> 
 	 */
-
-	/** Die Geier- und Maeusekarten */
 	private ArrayList<Integer> nochZuVergebendeGeierKarten = new ArrayList<Integer>();
 
 	/**
-	 * Die von den Bots gespielten Karten [n x 1-15] 2 Dimensional d.h. für 2
-	 * bots!
+	 * Die von den Bots gespielten Karten [n x 1-15] 2 Dimensional d.h. für 2 bots!
 	 */
 	private ArrayList<ArrayList<Integer>> gespielteKarten = new ArrayList<ArrayList<Integer>>();
 
@@ -68,8 +62,7 @@ public class HolsDerGeier {
 	 */
 	public int letzterZug(int nummerBot) {
 		if (gespielteKarten.get(nummerBot).size() > 0)
-			return gespielteKarten.get(nummerBot).get(
-					gespielteKarten.get(nummerBot).size() - 1);
+			return gespielteKarten.get(nummerBot).get(gespielteKarten.get(nummerBot).size() - 1);
 		else
 			return -99;
 	}
@@ -94,8 +87,8 @@ public class HolsDerGeier {
 		bots = new HolsDerGeierSpieler[2];
 		bots[0] = bot1;
 		bots[1] = bot2;
-		bot1.register(this, 1);
-		bot2.register(this, 0);
+		bot1.register(this, 0);
+		bot2.register(this, 1);
 	}
 
 	/**
@@ -171,14 +164,12 @@ public class HolsDerGeier {
 					punktstaende[1] = punktstaende[1] + punkte;
 				punkte = 0;
 			} else
-				System.out
-						.println("Unentschieden - Punkte wandern in die naechste Runde");
-			System.out.println("Spielstand: " + punktstaende[0] + " : "	+ punktstaende[1]);
-			System.out.println("Mein Bot: " + punktstaende[0]);
-			System.out.println("Mein Gegner: " + punktstaende[1]);
+				System.out.println("Unentschieden - Punkte wandern in die naechste Runde");
+				System.out.println("Spielstand: " + punktstaende[0] + " : "	+ punktstaende[1]);
+				System.out.println("Mein Bot: " + punktstaende[0]);
+				System.out.println("Mein Gegner: " + punktstaende[1]);
 		} else
-			System.out
-					.println("Spiel ist zu Ende. Sie muessen zuerst die Methode neues Siel aufrufen");
+			System.out.println("Spiel ist zu Ende. Sie muessen zuerst die Methode neues Siel aufrufen");
 
 	}
 

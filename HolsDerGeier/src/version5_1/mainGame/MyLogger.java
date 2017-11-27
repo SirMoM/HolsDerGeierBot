@@ -20,14 +20,35 @@ import javax.swing.text.DateFormatter;
  */
 public class MyLogger{
 	
-	final String 
+	
+	/**
+	 * Das Verzeichnis das vorhanden sein muss wir ggf. erstellt
+	 */
+	final static File DASVERZEICHNIS = new File(System.getProperties().getProperty("user.home") + "\\Documents\\Noah's Bot\\" );
+	
+	/**
+	 * Die benutzte CSV-Datei
+	 */
+	final static File KARTENCSV = new File(DASVERZEICHNIS.getPath() + "\\kartencsv.csv");
+	
+	/**
+	 * Tabellenkopf Vorlage
+	 */
+	final public static String TABLESTSART = "Punktekarte; Meine Karte; Gergner Karte; Gewonnen ? \n";
+
+	/**
+	 * Tabellenkopf Formvorlage
+	 */
+	final public static String TABLEFORM = "%s; %s; %s; %s ? \n";
+
 	
 	private static DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yy hh_mm_ss");
 
-	private static File loggerFile = new File(FileUsingClass.DASVERZEICHNIS.getAbsolutePath().toString() + "\\LOG" + LocalDateTime.now().format(df) + ".log");
+	private static File loggerFile = new File(DASVERZEICHNIS.getAbsolutePath().toString() + "\\LOG" + LocalDateTime.now().format(df) + ".log");
 	
 	private static BufferedWriter loggerFileWriter;
 	
+	private static BufferedWriter kartenCsvFileWriter;
 	
 	public static void log(String str) {
 		try {
@@ -40,7 +61,7 @@ public class MyLogger{
 	
 	public static void log(String str, Exception exception) {
 		try {
-			loggerFileWriter.write("["+ exception.getMessage() +"]"+"[" + LocalDateTime.now().format(df) + "] " + str + "\n");
+			loggerFileWriter.write("[EXEPTION]" + "[" + LocalDateTime.now().format(df) + "]" + "["+ exception.getMessage() +"]" + str + "\n");
 			loggerFileWriter.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -48,9 +69,9 @@ public class MyLogger{
 	}
 	
 	
-	public static void createLoggingDatei() {
+	public static void createLoggingFiles() {
 
-		FileUsingClass.createDir();
+		createDir();
 		if(!loggerFile.exists()) {
 			try {
 				loggerFile.createNewFile();
@@ -67,8 +88,32 @@ public class MyLogger{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		if(!KARTENCSV.exists()) {
+			try {
+				KARTENCSV.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		try {			
+			kartenCsvFileWriter = new BufferedWriter(new FileWriter(KARTENCSV));
+			kartenCsvFileWriter.write("Naoh Ruben " + LocalDateTime.now().format(df) + " TABELS START");
+			kartenCsvFileWriter.newLine();
+			kartenCsvFileWriter.write(TABLESTSART);
+			kartenCsvFileWriter.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
+	public static void createDir() {
+		if(!DASVERZEICHNIS.exists()) {
+			DASVERZEICHNIS.mkdir();
+		}
+	}
 	
 	
 }

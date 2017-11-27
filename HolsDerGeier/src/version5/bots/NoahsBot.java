@@ -102,9 +102,12 @@ public class NoahsBot extends HolsDerGeierSpieler {
 	public int gibKarte(int naechsteKarte) {
 		int dieZuSpielendeKarte;
 		int zuEvaluierendeKarte = naechsteKarte;
-		int letzteKarteDesgegners = getHdg().letzterZug(getBotNumber());
+		int letzteKarteDesgegners = getHdg().letzterZug(getEnemyBotNumber());
+		int letzteKarteVonMir = getHdg().letzterZug(getMyBotNumber());
 		
 		System.out.println("		Die letzte Karte des Gegners " + letzteKarteDesgegners);
+		System.out.println("		Die letzte Karte von  Mir " + letzteKarteVonMir);
+		
 		
 		if (meineKarten.isEmpty() == true) {
 			fuellMeineKarten();
@@ -117,11 +120,16 @@ public class NoahsBot extends HolsDerGeierSpieler {
 		System.out.println("		Meine gespielte Karte: " + getDieHöchstenKarten()[0]);
 		dieZuSpielendeKarte = getDieHöchstenKarten()[0];
 		meineKarten.remove(dieZuSpielendeKarte - 1);
-		return Integer.valueOf(kartenBewertung.get(dieZuSpielendeKarte));
+		return (int) dieZuSpielendeKarte;
 	}
 
-	private int getBotNumber() {
+	private int getMyBotNumber() {
+		
 		return getNummer();
+	}
+	
+	private int getEnemyBotNumber() {
+		return getHdg().letzterZug(1);
 	}
 
 	private void fuellDieKartenDesGegners() {
@@ -175,4 +183,27 @@ public class NoahsBot extends HolsDerGeierSpieler {
 		kartenBewertung.put(10, (double) 15);
 	}
 
+	private void logZug() {
+		
+	}
+	
+//	private void whoWon(){
+//		if (zuege[0] != zuege[1]) {
+//			if (punkte > 0)
+//				if (zuege[0] > zuege[1])
+//					punktstaende[0] = punktstaende[0] + punkte;
+//				else
+//					punktstaende[1] = punktstaende[1] + punkte;
+//			else if (zuege[0] < zuege[1])
+//				punktstaende[0] = punktstaende[0] + punkte;
+//			else
+//				punktstaende[1] = punktstaende[1] + punkte;
+//			punkte = 0;
+//		} else
+//			System.out.println("Unentschieden - Punkte wandern in die naechste Runde");
+//			System.out.println("Spielstand: " + punktstaende[0] + " : "	+ punktstaende[1]);
+//			System.out.println("Mein Bot: " + punktstaende[0]);
+//			System.out.println("Mein Gegner: " + punktstaende[1]);
+//	}
+	
 }
