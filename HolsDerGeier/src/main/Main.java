@@ -19,14 +19,15 @@ public class Main {
 		
 		MyLogger.createLoggingFiles();
 		
-		IntelligentererGeier bot1 = new IntelligentererGeier();
-		IntelligentererGeier bot2 = new IntelligentererGeier();
-		Mensch bot3 = new Mensch();
-		Geier bot4 = new Geier();
-		NoahsBot aBotToRuleThemAll = new NoahsBot();
+		IntelligentererGeier	bot1 = new IntelligentererGeier();
+		IntelligentererGeier	bot2 = new IntelligentererGeier();
+		Mensch 					bot3 = new Mensch();
+		Geier 					bot4 = new Geier();
+		NoahsBot 				aBotToRuleThemAll = new NoahsBot();
+		TestBot 				xBot = new TestBot();
 		
 		HolsDerGeier spiel = new HolsDerGeier();
-		spiel.initBots(aBotToRuleThemAll, bot1);
+		spiel.initBots(xBot, bot1);
 		try {
 			spiel.ganzesSpiel();
 		} catch (Exception e) {

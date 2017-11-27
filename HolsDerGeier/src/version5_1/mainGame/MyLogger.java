@@ -37,9 +37,10 @@ public class MyLogger{
 	final public static String TABLESTSART = "Punktekarte; Meine Karte; Gergner Karte; Gewonnen ? \n";
 
 	/**
-	 * Tabellenkopf Formvorlage
+	 * Tabellenkopf Formvorlage <p>
+	 * Punktekarte; Meine Karte; Gergner Karte; Gewonnen
 	 */
-	final public static String TABLEFORM = "%s; %s; %s; %s ? \n";
+	final public static String TABLEFORM = "%s; %s; %s; %s";
 
 	
 	private static DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yy hh_mm_ss");
@@ -113,6 +114,21 @@ public class MyLogger{
 		if(!DASVERZEICHNIS.exists()) {
 			DASVERZEICHNIS.mkdir();
 		}
+	}
+
+	public static void logTable(int punktekarte, int meineKarte, int gegnerKarte, String whoWon) {
+		String tempLine = String.format(TABLESTSART, String.valueOf(punktekarte), String.valueOf(meineKarte), String.valueOf(gegnerKarte), whoWon);
+		System.out.println(tempLine);
+		try {
+			kartenCsvFileWriter = new BufferedWriter(new FileWriter(KARTENCSV));
+			kartenCsvFileWriter.write(tempLine);
+			kartenCsvFileWriter.newLine();
+			kartenCsvFileWriter.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	

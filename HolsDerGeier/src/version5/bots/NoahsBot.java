@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import version5_1.mainGame.HolsDerGeierSpieler;
+import version5_1.mainGame.MyLogger;
 
 /**
  * @author boss
@@ -12,6 +13,11 @@ import version5_1.mainGame.HolsDerGeierSpieler;
 public class NoahsBot extends HolsDerGeierSpieler {
 	ArrayList<Integer> meineKarten = new ArrayList<Integer>();
 	ArrayList<Integer> dieKartenDesGegners = new ArrayList<Integer>();
+	
+	int letzteKarteDesgegners; 
+	
+	int letzteKarteVonMir;
+
 	/**
 	 * < <b>K</b>ey, <b>V</b>alue>
 	 * <p>
@@ -36,11 +42,11 @@ public class NoahsBot extends HolsDerGeierSpieler {
 		super();
 	}
 
-	public int[] getDieHöchstenKarten() {
+	public int[] getDieHoechstenKarten() {
 		return dieHoechstenKarten;
 	}
 
-	public void setDieHöchstenKarten() {
+	public void setDieHoechstenKarten() {
 		System.out.println("		######################");
 		int dieGroesstekarteGegner = 0;
 		int meineGroesstekarte = 0;
@@ -102,11 +108,11 @@ public class NoahsBot extends HolsDerGeierSpieler {
 	public int gibKarte(int naechsteKarte) {
 		int dieZuSpielendeKarte;
 		int zuEvaluierendeKarte = naechsteKarte;
-		int letzteKarteDesgegners = getHdg().letzterZug(getEnemyBotNumber());
-		int letzteKarteVonMir = getHdg().letzterZug(getMyBotNumber());
 		
-		System.out.println("		Die letzte Karte des Gegners " + letzteKarteDesgegners);
-		System.out.println("		Die letzte Karte von  Mir " + letzteKarteVonMir);
+		logZug(naechsteKarte, letzteKarteVonMir, letzteKarteDesgegners);
+		
+//		System.out.println("		Die letzte Karte des Gegners " + letzteKarteDesgegners);
+//		System.out.println("		Die letzte Karte von  Mir " + letzteKarteVonMir);
 		
 		
 		if (meineKarten.isEmpty() == true) {
@@ -114,22 +120,13 @@ public class NoahsBot extends HolsDerGeierSpieler {
 		} else if (dieKartenDesGegners.isEmpty() == true) {
 			fuellDieKartenDesGegners();
 		} else {
-			setDieHöchstenKarten();
+			setDieHoechstenKarten();
 			setDieNiedrigstenKarten();
 		}
-		System.out.println("		Meine gespielte Karte: " + getDieHöchstenKarten()[0]);
-		dieZuSpielendeKarte = getDieHöchstenKarten()[0];
+		System.out.println("		Meine gespielte Karte: " + getDieHoechstenKarten()[0]);
+		dieZuSpielendeKarte = getDieHoechstenKarten()[0];
 		meineKarten.remove(dieZuSpielendeKarte - 1);
 		return (int) dieZuSpielendeKarte;
-	}
-
-	private int getMyBotNumber() {
-		
-		return getHdg().letzterZug(0);
-	}
-	
-	private int getEnemyBotNumber() {
-		return getHdg().letzterZug(1);
 	}
 
 	private void fuellDieKartenDesGegners() {
@@ -183,27 +180,44 @@ public class NoahsBot extends HolsDerGeierSpieler {
 		kartenBewertung.put(10, (double) 15);
 	}
 
-	private void logZug() {
-		
+	private void logZug(int punkteKarte, int meineKarte, int gergnerKarte) {
+		MyLogger.logTable(punkteKarte, meineKarte, gergnerKarte, whoWon(punkteKarte) );
 	}
 	
-//	private void whoWon(){
-//		if (zuege[0] != zuege[1]) {
-//			if (punkte > 0)
-//				if (zuege[0] > zuege[1])
-//					punktstaende[0] = punktstaende[0] + punkte;
-//				else
-//					punktstaende[1] = punktstaende[1] + punkte;
-//			else if (zuege[0] < zuege[1])
-//				punktstaende[0] = punktstaende[0] + punkte;
-//			else
-//				punktstaende[1] = punktstaende[1] + punkte;
-//			punkte = 0;
-//		} else
-//			System.out.println("Unentschieden - Punkte wandern in die naechste Runde");
-//			System.out.println("Spielstand: " + punktstaende[0] + " : "	+ punktstaende[1]);
-//			System.out.println("Mein Bot: " + punktstaende[0]);
-//			System.out.println("Mein Gegner: " + punktstaende[1]);
-//	}
+	private void getLetzteKarten() {
+		letzteKarteVonMir = getHdg().letzterZug(this.getNummer());
+		
+		if(getHdg().letzterZug(this.getNummer()) == 0) {
+			letzteKarteDesgegners = getHdg().letzterZug(1);
+		}else {
+			letzteKarteDesgegners = getHdg().letzterZug(0);
+		}
+	}
+	
+	private String whoWon(int punkteKarte){
+		final String winEnemy = "Enemy"; 
+		final String winMe = "MyBot";
+		final String tied = "Nobody";
+		if (letzteKarteDesgegners != letzteKarteVonMir) {
+			if (punkteKarte > 0) {
+				if ( letzteKarteVonMir > letzteKarteDesgegners) {
+					// I WON X POINTS
+					return winMe;
+				}else {
+					// ENEMY WON
+					return winEnemy;
+ 				}
+			}else if ( letzteKarteVonMir < letzteKarteDesgegners) {
+				// I WON X POINTS
+				return winMe;
+			}else {
+				// ENEMY WON
+				return winEnemy;
+			}
+		}else{
+			//NOBODY WON
+			return tied;
+		}
+	}
 	
 }
