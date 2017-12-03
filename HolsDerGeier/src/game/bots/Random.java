@@ -1,8 +1,8 @@
-package version5.bots;
+package game.bots;
 
 import java.util.ArrayList;
 
-import version5_1.mainGame.HolsDerGeierSpieler;
+import game.mainGame.HolsDerGeierSpieler;
 
 /**
  * Beschreiben Sie hier die Klasse Random.

@@ -1,10 +1,10 @@
-package version5.bots;
+package game.bots;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import version5_1.mainGame.HolsDerGeierSpieler;
-import version5_1.mainGame.MyLogger;
+import game.mainGame.HolsDerGeierSpieler;
+import game.mainGame.MyLogger;
 
 /**
  * @author boss

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package version5_1.mainGame;
+package game.mainGame;
 
 import java.io.BufferedWriter;
 import java.io.File;

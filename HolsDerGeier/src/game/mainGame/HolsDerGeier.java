@@ -1,4 +1,4 @@
-package version5_1.mainGame;
+package game.mainGame;
 
 import java.util.ArrayList;
 import java.util.Iterator;

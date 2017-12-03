@@ -1,4 +1,4 @@
-package version5_1.mainGame;
+package game.mainGame;
 
 
 public abstract class HolsDerGeierSpieler {
@@ -8,7 +8,7 @@ public abstract class HolsDerGeierSpieler {
 
     
     public int getNummer() {
-        System.out.println(this.nummer);
+        System.out.println(this.getClass().getSimpleName() + " with this number "+ this.nummer);
     	return this.nummer;
     }
     public HolsDerGeier getHdg()  {

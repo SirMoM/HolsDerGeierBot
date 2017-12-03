@@ -1,10 +1,10 @@
 /**
  * 
  */
-package main;
+package game.main;
 
-import version5.bots.*;
-import version5_1.mainGame.*;
+import game.bots.*;
+import game.mainGame.*;
 
 /**
  * @author Noah Ruben
@@ -25,9 +25,10 @@ public class Main {
 		Geier 					bot4 = new Geier();
 		NoahsBot 				aBotToRuleThemAll = new NoahsBot();
 		TestBot 				xBot = new TestBot();
+		RuleThemAll 			ruleThem = new RuleThemAll();
 		
 		HolsDerGeier spiel = new HolsDerGeier();
-		spiel.initBots(aBotToRuleThemAll, bot1);
+		spiel.initBots(ruleThem, bot1);
 		try {
 			spiel.ganzesSpiel();
 		} catch (Exception e) {
