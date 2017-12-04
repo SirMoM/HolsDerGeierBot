@@ -8,7 +8,6 @@ public abstract class HolsDerGeierSpieler {
 
     
     public int getNummer() {
-        System.out.println(this.getClass().getSimpleName() + " with this number "+ this.nummer);
     	return this.nummer;
     }
     public HolsDerGeier getHdg()  {
