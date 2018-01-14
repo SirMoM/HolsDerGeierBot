@@ -33,7 +33,6 @@ public class Main {
 			spiel.ganzesSpiel();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Schummler");
 		}
 	}
 

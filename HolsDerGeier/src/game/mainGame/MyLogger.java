@@ -24,12 +24,12 @@ public class MyLogger{
 	/**
 	 * Das Verzeichnis das vorhanden sein muss wir ggf. erstellt
 	 */
-	final static File DASVERZEICHNIS = new File(System.getProperties().getProperty("user.home") + "\\Documents\\Noah's Bot\\" );
+	final public static File DASVERZEICHNIS = new File(System.getProperties().getProperty("user.home") + "\\Documents\\Noah's Bot\\" );
 	
 	/**
 	 * Die benutzte CSV-Datei
 	 */
-	final static File KARTENCSV = new File(DASVERZEICHNIS.getPath() + "\\kartencsv.csv");
+	final public static File GESPIELTEZUEGE = new File(DASVERZEICHNIS.getPath() + "\\gespielteZuege.csv");
 	
 	/**
 	 * Tabellenkopf Vorlage
@@ -92,21 +92,16 @@ public class MyLogger{
 			e.printStackTrace();
 		}
 		
-		if(!KARTENCSV.exists()) {
+		if(!GESPIELTEZUEGE.exists()) {
 			try {
-				KARTENCSV.createNewFile();
+				GESPIELTEZUEGE.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		
 		try {			
-			kartenCsvFileWriter = new BufferedWriter(new FileWriter(KARTENCSV, true));
-			kartenCsvFileWriter.write("Naoh Ruben;" + LocalDateTime.now().format(df) + ";TABELS START");
-			kartenCsvFileWriter.newLine();
-			kartenCsvFileWriter.write(TABLESTSART);
-			kartenCsvFileWriter.newLine();
-			kartenCsvFileWriter.flush();
+			kartenCsvFileWriter = new BufferedWriter(new FileWriter(GESPIELTEZUEGE, true));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

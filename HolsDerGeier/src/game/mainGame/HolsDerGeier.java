@@ -134,8 +134,7 @@ public class HolsDerGeier {
 									+ i + " " + zuege[i]);
 
 				if ((zuege[i] < 1) || (zuege[i] > 15))
-					throw new Exception(
-							"GESCHUMMELT: Diese Karte gibt es gar nicht");
+					throw new Exception("GESCHUMMELT: Diese Karte gibt es gar nicht");
 			}
 
 			// Alle Zuege fertig, dann eintragen (erst hier wg. Methode
