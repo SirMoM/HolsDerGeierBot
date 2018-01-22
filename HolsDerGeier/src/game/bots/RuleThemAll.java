@@ -9,8 +9,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 import game.mainGame.*;
 
@@ -67,6 +71,7 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 			diePunktekarten.add(i);
 		}
 		setDieKartenBewertungDesGegners();
+		modifyCardValues();
 	}
 
 	/*
@@ -342,6 +347,11 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 	}
 
 	private void modifyCardValues() {
+		for(int key : meineKartenBewertung.keySet()) {
+			if(meineKartenBewertung.get(key) < dieKartenBewertungDesGegners.get(key)) {
+				MyLogger.log("[Debug] meine Wertung für " + key + "ist geringer als die des Bots" );
+			}
+		}
 
 	}
 
