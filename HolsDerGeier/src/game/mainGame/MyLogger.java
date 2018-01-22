@@ -19,18 +19,18 @@ import javax.swing.text.DateFormatter;
  * @since 25.09.2017
  */
 public class MyLogger{
-	
-	
+
+
 	/**
 	 * Das Verzeichnis das vorhanden sein muss wir ggf. erstellt
 	 */
 	final public static File DASVERZEICHNIS = new File(System.getProperties().getProperty("user.home") + "\\Documents\\Noah's Bot\\" );
-	
+
 	/**
 	 * Die benutzte CSV-Datei
 	 */
 	final public static File GESPIELTEZUEGE = new File(DASVERZEICHNIS.getPath() + "\\gespielteZuege.csv");
-	
+
 	/**
 	 * Tabellenkopf Vorlage
 	 */
@@ -42,15 +42,15 @@ public class MyLogger{
 	 */
 	final public static String TABLEFORM = "%s; %s; %s; %s";
 
-	
+
 	private static DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yy hh_mm_ss");
 
 	private static File loggerFile = new File(DASVERZEICHNIS.getAbsolutePath().toString() + "\\LOG" + LocalDateTime.now().format(df) + ".log");
-	
+
 	private static BufferedWriter loggerFileWriter;
-	
+
 	private static BufferedWriter kartenCsvFileWriter;
-	
+
 	public static void log(String str) {
 		try {
 			loggerFileWriter.write("[LOG][" + LocalDateTime.now().format(df) + "] " + str + "\n");
@@ -60,7 +60,7 @@ public class MyLogger{
 			e.printStackTrace();
 		}
 	}	
-	
+
 	public static void log(String str, Exception exception) {
 		try {
 			loggerFileWriter.write("[EXEPTION]" + "[" + LocalDateTime.now().format(df) + "]" + "["+ exception.getMessage() +"]" + str + "\n");
@@ -70,8 +70,8 @@ public class MyLogger{
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public static void createLoggingFiles() {
 
 		createDir();
@@ -82,7 +82,7 @@ public class MyLogger{
 				e.printStackTrace();
 			}
 		}
-		
+
 		try {			
 			loggerFileWriter = new BufferedWriter(new FileWriter(loggerFile));
 			loggerFileWriter.write("Sir.MoM " + LocalDateTime.now().format(df) + " LOG START");
@@ -91,7 +91,7 @@ public class MyLogger{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		if(!GESPIELTEZUEGE.exists()) {
 			try {
 				GESPIELTEZUEGE.createNewFile();
@@ -99,15 +99,15 @@ public class MyLogger{
 				e.printStackTrace();
 			}
 		}
-		
+
 		try {			
 			kartenCsvFileWriter = new BufferedWriter(new FileWriter(GESPIELTEZUEGE, true));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public static void createDir() {
 		if(!DASVERZEICHNIS.exists()) {
 			DASVERZEICHNIS.mkdir();
@@ -123,9 +123,9 @@ public class MyLogger{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
+
+
 	}
-	
-	
+
+
 }

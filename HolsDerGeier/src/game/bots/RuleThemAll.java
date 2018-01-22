@@ -54,8 +54,6 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 		dieKartenBewertungDesGegners.clear();
 		zug = 0;
 
-		intiCardValues();
-
 		// init nochNichtGespielt, meineKarten, dieKartenDesGegners
 		for (int i = 1; i <= 15; i++) {
 			nochNichtGespielt.add(i);
@@ -67,9 +65,12 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 		for (int i = -5; i < 0; i++) {
 			diePunktekarten.add(i);
 		}
+		
 		for (int i = 1; i < 11; i++) {
 			diePunktekarten.add(i);
 		}
+		
+		intiCardValues();
 		setDieKartenBewertungDesGegners();
 		modifyCardValues();
 	}
@@ -92,6 +93,7 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 		if (zug == 15) {
 			MyLogger.logTable(getVerbleibendePunktekarte(), getVerbleibendeMeineKarte(), getVerbleibendeGegnerKarte(),
 					getWhoWon(getVerbleibendeMeineKarte(), getVerbleibendeGegnerKarte()));
+			return getVerbleibendeMeineKarte();
 		}
 
 		letztePunktekarte.add(pointsThisRound);
@@ -132,10 +134,10 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 				return getHighestCardLeft();
 			}
 
-			if ((resultingPoints > 10 || resultingPoints < -2) && resultingPoints <= 10 && resultingPoints >= -5) {
-				MyLogger.log("[Debug] über 10 und unter 2");
+			if ((resultingPoints > 8 || resultingPoints < -2) && resultingPoints <= 10 && resultingPoints >= -5) {
+				MyLogger.log("[Debug] über 8 und unter 2");
 
-				if (!meineKarten.contains(meineKartenBewertung.get(resultingPoints).intValue())) {
+				if (!(meineKarten.contains(meineKartenBewertung.get(resultingPoints).intValue()))) {
 					MyLogger.log("[Debug][DANGER] Berechnung funktioniert nicht!");
 					MyLogger.log("[Debug] return:\t" + meineKartenBewertung.get(cardToEvaluate).intValue());
 					return meineKartenBewertung.get(cardToEvaluate).intValue();
@@ -147,15 +149,16 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 					return meineKartenBewertung.get(cardToEvaluate).intValue();
 
 				}
-				
+
 				//Bewertung vor dem Vertauschen!
 				String str;
 				for (Integer key : meineKartenBewertung.keySet()) {
 					str = "[" + key + "] \t" + meineKartenBewertung.get(key);
 				}
-				
+				double temp = meineKartenBewertung.get(resultingPoints);
 				meineKartenBewertung.replace(resultingPoints, meineKartenBewertung.get(cardToEvaluate));
-				
+				meineKartenBewertung.replace(cardToEvaluate, temp);
+
 				//Bewertung nach dem vertauschen
 				String str2;
 				for (Integer key : meineKartenBewertung.keySet()) {
@@ -165,7 +168,7 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 				}
 
 				MyLogger.log("[Debug] return:\t" + meineKartenBewertung.get(resultingPoints).intValue());
-				return meineKartenBewertung.get(resultingPoints).intValue();
+				return meineKartenBewertung.get(cardToEvaluate).intValue();
 
 			} else {
 				MyLogger.log("[Debug] 'NORMAL'");
@@ -298,10 +301,28 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 	}
 
 	public void setDieKartenBewertungDesGegners() {
-		String stringToParse;
+		String stringToParse;	
+		
+		if(dieKartenBewertungDesGegners.isEmpty()) {
+			dieKartenBewertungDesGegners.put(-5, (double) 0);
+			dieKartenBewertungDesGegners.put(-4, (double) 0);
+			dieKartenBewertungDesGegners.put(-3, (double) 0);
+			dieKartenBewertungDesGegners.put(-2, (double) 0);
+			dieKartenBewertungDesGegners.put(-1, (double) 0);
+			dieKartenBewertungDesGegners.put(1, (double) 0);
+			dieKartenBewertungDesGegners.put(2, (double) 0);
+			dieKartenBewertungDesGegners.put(3, (double) 0);
+			dieKartenBewertungDesGegners.put(4, (double) 0);
+			dieKartenBewertungDesGegners.put(5, (double) 0);
+			dieKartenBewertungDesGegners.put(6, (double) 0);
+			dieKartenBewertungDesGegners.put(7, (double) 0);
+			dieKartenBewertungDesGegners.put(8, (double) 0);
+			dieKartenBewertungDesGegners.put(9, (double) 0);
+			dieKartenBewertungDesGegners.put(10, (double) 0);
+		}
+		
 		try {
 			BufferedReader readFromCsv = new BufferedReader(new FileReader(MyLogger.GESPIELTEZUEGE));
-
 			while ((stringToParse = readFromCsv.readLine()) != null) {
 				String[] zeileSplit = stringToParse.split(";");
 				int punktekarte = Integer.valueOf(zeileSplit[0].trim());
@@ -309,7 +330,7 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 				int gegnerKarte = Integer.valueOf(zeileSplit[2].trim());
 				int winOrLoss = Integer.valueOf(zeileSplit[3].trim());
 
-				if (dieKartenBewertungDesGegners.get(punktekarte) == null) {
+				if (dieKartenBewertungDesGegners.get(punktekarte) == 0.0) {
 					dieKartenBewertungDesGegners.put(punktekarte, Double.valueOf(gegnerKarte));
 				} else {
 					Double altePunktekartenBewertung = dieKartenBewertungDesGegners.get(punktekarte);
@@ -322,9 +343,9 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 			MyLogger.log("[Error] faild to fill dieKartenBewertungDesGegners \n" + e.getMessage(), e);
 		}
 
-		String debugNachricht;
+
 		for (Integer key : dieKartenBewertungDesGegners.keySet()) {
-			debugNachricht = "[" + key + "] \t" + dieKartenBewertungDesGegners.get(key);
+			String debugNachricht = "[" + key + "] \t" + dieKartenBewertungDesGegners.get(key);
 			MyLogger.log("[Debug]" + debugNachricht);
 
 		}
@@ -350,9 +371,11 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 		for(int key : meineKartenBewertung.keySet()) {
 			if(meineKartenBewertung.get(key) < dieKartenBewertungDesGegners.get(key)) {
 				MyLogger.log("[Debug] meine Wertung für " + key + "ist geringer als die des Bots" );
+				
+				if(key > 8 || key < -2 ) {
+					MyLogger.log("[Debug][Warnung] meine Wertung für " + key + "ist geringer als die des Bots" );
+				}
 			}
 		}
-
 	}
-
 }

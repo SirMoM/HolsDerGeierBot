@@ -27,8 +27,8 @@ public class HolsDerGeier {
 	private HolsDerGeierSpieler[] bots;
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public HolsDerGeier() {
 		gespielteKarten.add(new ArrayList<Integer>());
 		gespielteKarten.add(new ArrayList<Integer>());
@@ -163,9 +163,9 @@ public class HolsDerGeier {
 				punkte = 0;
 			} else
 				System.out.println("Unentschieden - Punkte wandern in die naechste Runde");
-				System.out.println("Spielstand: " + punktstaende[0] + " : "	+ punktstaende[1]);
-//				System.out.println("Mein Bot: " + punktstaende[0]);
-//				System.out.println("Mein Gegner: " + punktstaende[1]);
+			System.out.println("Spielstand: " + punktstaende[0] + " : "	+ punktstaende[1]);
+			//				System.out.println("Mein Bot: " + punktstaende[0]);
+			//				System.out.println("Mein Gegner: " + punktstaende[1]);
 		} else
 			System.out.println("Spiel ist zu Ende. Sie muessen zuerst die Methode neues Siel aufrufen");
 
