@@ -26,7 +26,7 @@ public class Main {
 		HolsDerGeier spiel = new HolsDerGeier();
 		spiel.initBots(ruleThem, bot1);
 		try {
-			for (int i = 0; i < 1000; i++) {
+			for (int i = 0; i <= 1000000; i++) {
 				spiel.ganzesSpiel();
 				if(spiel.punktstaende[0] > spiel.punktstaende[1]) {
 					gewonnen++;
