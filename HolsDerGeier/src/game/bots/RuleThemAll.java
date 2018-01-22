@@ -1,14 +1,17 @@
+package game.bots;
 /**
  * 
  */
-package game.bots;
 
+
+import java.awt.HeadlessException;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import game.mainGame.*;
 
@@ -23,10 +26,17 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 	private ArrayList<Integer> dieKartenDesGegners = new ArrayList<Integer>();
 	private ArrayList<Integer> diePunktekarten = new ArrayList<Integer>();
 	private int[] letzteZuege = new int[2];
-	private int letztePunktekarte;
+	private ArrayList<Integer> letztePunktekarte = new ArrayList<Integer>();
 	private int zug = 0;
 	private HashMap<Integer, Double> meineKartenBewertung = new HashMap<Integer, Double>();
 	private HashMap<Integer, Double> dieKartenBewertungDesGegners = new HashMap<Integer, Double>();
+
+	
+	
+	public RuleThemAll() {
+		super();
+		MyLogger.createLoggingFiles();
+	}
 
 	/* (non-Javadoc)
 	 * @see game.mainGame.HolsDerGeierSpieler#reset()
@@ -39,6 +49,7 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 		dieKartenDesGegners.clear();
 		diePunktekarten.clear();
 		dieKartenBewertungDesGegners.clear();
+		zug = 0;
 
 		intiCardValues();
 
@@ -55,9 +66,8 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 		}
 		for (int i = 1; i < 11; i++) {
 			diePunktekarten.add(i);
-			
-		setDieKartenBewertungDesGegners();
 		}
+		setDieKartenBewertungDesGegners();
 	}
 
 	/* (non-Javadoc)
@@ -66,40 +76,112 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 	@Override
 	public int gibKarte(int pointsThisRound) {
 		zug++;		
+		MyLogger.log("######" + (zug - 1) + "######");
+		System.out.println("######" + (zug - 1) + "######");
+		
 		if(zug > 1) {
 			fillLetzteZuege();
-			logInTabelle(letztePunktekarte); 
+			logInTabelle(letztePunktekarte.get(letztePunktekarte.size() - 1)); 
 			deleteLastCards();
 		}
-
 		if(zug == 15) {
 			MyLogger.logTable(getVerbleibendePunktekarte(), getVerbleibendeMeineKarte(), getVerbleibendeGegnerKarte(), getWhoWon(getVerbleibendeMeineKarte(), getVerbleibendeGegnerKarte()));
 		}
-		letztePunktekarte = pointsThisRound;
-		MyLogger.log("######" + (zug - 1) + "######");
-
-
-
+		
+		letztePunktekarte.add(pointsThisRound);
 		return useCardValueToCalculateTheCardToPlay(pointsThisRound);
 	}
 
 	private int useCardValueToCalculateTheCardToPlay(int cardToEvaluate) {
+		MyLogger.log("Card to evaluate " + cardToEvaluate + " value " + meineKartenBewertung.get(cardToEvaluate));
+		logVerbleibendeKarten();
+		String str3;
+		for (Integer key : meineKartenBewertung.keySet()) {
+			str3 = "[" + key + "] \t" + meineKartenBewertung.get(key);
+			MyLogger.log("[Meine Kartenbewertung]" + str3);
+			System.out.println("[Meine Kartenbewertung]" + str3);
+			
+		}
 		Double dieBewertungDesGegners = dieKartenBewertungDesGegners.get(cardToEvaluate);
 		Double meineBewertungDieserKarte = meineKartenBewertung.get(cardToEvaluate);
-		System.out.println("dieBewertungDesGegners: " + dieBewertungDesGegners + "\t meineBewertungDieserKarte: " + meineBewertungDieserKarte);
 		
-		if(getWhoWon(letzteZuege[0], letzteZuege[1]) == "3") {
-			int resultingPoints = cardToEvaluate + letztePunktekarte;
+		if(getWhoWon(letzteZuege[0], letzteZuege[1]) == "3" && zug > 1) {
 			
-			if(resultingPoints > 15) {
+			int resultingPoints = cardToEvaluate + letztePunktekarte.get(letztePunktekarte.size() - 2);
+			
+			MyLogger.log("[Debug] resultingPoints = cardToEvaluate + letztePunktekarte.get(letztePunktekarte.size() - 1) \t" + cardToEvaluate + " " + (letztePunktekarte.get(letztePunktekarte.size() - 1)));
+			MyLogger.log("[Debug] card \t" + cardToEvaluate + " " + meineBewertungDieserKarte);
+			MyLogger.log("[Debug] resultingPoints \t" + resultingPoints);
+			
+			if(resultingPoints > 10) {
+				MyLogger.log("[Debug] resultingPoints > 10");
+				MyLogger.log("meineBewertungDieserKarte: " + cardToEvaluate + " " + meineBewertungDieserKarte);
+				MyLogger.log("meineBewertungDieserKarte: " + resultingPoints + " " + getHighestCardLeft());
+				for (Integer key : meineKartenBewertung.keySet()) {
+					if(meineKartenBewertung.get(key) == getHighestCardLeft()) {
+						meineKartenBewertung.replace(key, meineBewertungDieserKarte);
+					}
+				}
+				MyLogger.log("[Debug] return:\t" + getHighestCardLeft());
 				return getHighestCardLeft();
-			}else if(resultingPoints < -5) {
-				return getLowestCardLeft();
-			}else {
-				return meineKartenBewertung.get(cardToEvaluate).intValue();
+				
+			}else if (resultingPoints < -5) {
+				MyLogger.log("[Debug] resultingPoints < -5");
+				MyLogger.log("meineBewertungDieserKarte: " + cardToEvaluate + " " + meineBewertungDieserKarte);
+				MyLogger.log("meineBewertungDieserKarte: " + resultingPoints + " " + getHighestCardLeft());
+				for (Integer key : meineKartenBewertung.keySet()) {
+					if(meineKartenBewertung.get(key) == getHighestCardLeft()) {
+						meineKartenBewertung.replace(key, meineBewertungDieserKarte);
+					}
+				}
+				MyLogger.log("[Debug] return:\t" + getHighestCardLeft());
+				return getHighestCardLeft();
 			}
-		}	
-		
+			
+			if((resultingPoints > 10 || resultingPoints < -2)  && resultingPoints <= 10 && resultingPoints >= -5) {
+				MyLogger.log("[Debug] über 10 und unter 2");
+				MyLogger.log("[Debug] resultingPoints" + resultingPoints);
+				
+				if(!meineKarten.contains(meineKartenBewertung.get(resultingPoints).intValue())) {
+					return meineKartenBewertung.get(cardToEvaluate).intValue();
+				}
+				
+				if(resultingPoints == 0) {
+					MyLogger.log("[Debug] resultingPoints == 0");
+					return meineKartenBewertung.get(cardToEvaluate).intValue();
+					
+				}
+				String str;
+				for (Integer key : meineKartenBewertung.keySet()) {
+					str = "[" + key + "] \t" + meineKartenBewertung.get(key);
+					MyLogger.log("[Meine Kartenbewertung]" + str);
+					System.out.println("[Meine Kartenbewertung]" + str);
+					
+				}
+				
+				meineKartenBewertung.replace(resultingPoints, meineKartenBewertung.get(cardToEvaluate));
+				
+				
+				System.out.println("");
+				
+				String str2;
+				for (Integer key : meineKartenBewertung.keySet()) {
+					str = "[" + key + "] \t" + meineKartenBewertung.get(key);
+					MyLogger.log("[Meine Kartenbewertung V]" + str + "[Meine Kartenbewertung]" + str);
+					System.out.println("[Meine Kartenbewertung]" + str);
+					
+				}
+				
+				MyLogger.log("[Debug] return:\t" + meineKartenBewertung.get(resultingPoints).intValue());
+				return meineKartenBewertung.get(resultingPoints).intValue();
+				
+				
+			}else {
+				MyLogger.log("[Debug] 'NORMAL'");
+				return meineKartenBewertung.get(cardToEvaluate).intValue();	
+				
+			}
+		}
 		return meineKartenBewertung.get(cardToEvaluate).intValue();
 	}
 
@@ -227,7 +309,7 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 			BufferedReader readFromCsv = new BufferedReader(new FileReader(MyLogger.GESPIELTEZUEGE));
 			
 			while((stringToParse = readFromCsv.readLine()) != null) {
-				MyLogger.log("Line read:" + stringToParse);
+//				MyLogger.log("Line read:" + stringToParse);
 				String[] zeileSplit = stringToParse.split(";");
 				int punktekarte =  Integer.valueOf(zeileSplit[0].trim());
 				int meineKarte = Integer.valueOf(zeileSplit[1].trim());
@@ -238,7 +320,8 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 					dieKartenBewertungDesGegners.put(punktekarte, Double.valueOf(gegnerKarte));
 				}else {
 					Double altePunktekartenBewertung = dieKartenBewertungDesGegners.get(punktekarte);
-					Double neuePunktekartenBewertung = (altePunktekartenBewertung + gegnerKarte) / 2; 
+					Double neuePunktekartenBewertung = (altePunktekartenBewertung + gegnerKarte) / 2;
+					neuePunktekartenBewertung = Math.floor(neuePunktekartenBewertung * 1000) / 1000;
 					dieKartenBewertungDesGegners.put(punktekarte, neuePunktekartenBewertung);
 				}
 			}
@@ -247,6 +330,28 @@ public class RuleThemAll extends HolsDerGeierSpieler {
 			e.printStackTrace();
 		}
 		
-		//dieKartenBewertungDesGegners.put()
+		String debugNachricht;
+		for (Integer key : dieKartenBewertungDesGegners.keySet()) {
+			debugNachricht = "[" + key + "] \t" + dieKartenBewertungDesGegners.get(key);
+			MyLogger.log("[Debug]" + debugNachricht);
+			//System.out.println(dieKartenBewertungDesGegners.get(key));
+			
+		}
 	}
+	
+	public void logVerbleibendeKarten() {
+		String x = "[";
+		for (Integer integer : meineKarten) {
+			x = x + integer + ", ";
+		}
+		
+		MyLogger.log("[Debug]" + x + "]");
+	}
+	
+	private int spieleZufallskarte() {
+        int nochVorhanden = meineKarten.size();            
+        int index = (int) (Math.random() * nochVorhanden);
+        int ret = nochNichtGespielt.remove(index);
+        return ret;
+    }
 }

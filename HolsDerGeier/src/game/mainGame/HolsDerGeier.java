@@ -21,7 +21,7 @@ public class HolsDerGeier {
 
 	/** Punktestaende */
 	private int punkte;
-	private int[] punktstaende = new int[2];
+	public int[] punktstaende = new int[2];
 
 	/** Die Bot die am Spiel teilnehmen sollen */
 	private HolsDerGeierSpieler[] bots;
@@ -53,6 +53,7 @@ public class HolsDerGeier {
 		int nochNichtVergeben = nochZuVergebendeGeierKarten.size();
 		int index = (int) (Math.random() * nochNichtVergeben);
 		int ret = nochZuVergebendeGeierKarten.remove(index);
+		System.out.println("##################### \t " + ret);
 		return ret;
 	}
 
@@ -129,9 +130,7 @@ public class HolsDerGeier {
 				// Wenn ja: Jetzt ist aber Schluss
 				// Wenn nein: Ich merke mit die Karte
 				if (gespielteKarten.get(i).contains(zuege[i]))
-					throw new Exception(
-							"GESCHUMMELT: Diese Karte wurde bereits gespielt "
-									+ i + " " + zuege[i]);
+					throw new Exception("GESCHUMMELT: Diese Karte wurde bereits gespielt von " + i + " " + zuege[i]);
 
 				if ((zuege[i] < 1) || (zuege[i] > 15))
 					throw new Exception("GESCHUMMELT: Diese Karte gibt es gar nicht");
@@ -165,8 +164,8 @@ public class HolsDerGeier {
 			} else
 				System.out.println("Unentschieden - Punkte wandern in die naechste Runde");
 				System.out.println("Spielstand: " + punktstaende[0] + " : "	+ punktstaende[1]);
-				System.out.println("Mein Bot: " + punktstaende[0]);
-				System.out.println("Mein Gegner: " + punktstaende[1]);
+//				System.out.println("Mein Bot: " + punktstaende[0]);
+//				System.out.println("Mein Gegner: " + punktstaende[1]);
 		} else
 			System.out.println("Spiel ist zu Ende. Sie muessen zuerst die Methode neues Siel aufrufen");
 
@@ -182,5 +181,4 @@ public class HolsDerGeier {
 			naechsterZug();
 		}
 	}
-
 }

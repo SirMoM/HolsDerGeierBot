@@ -17,20 +17,22 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
-		MyLogger.createLoggingFiles();
+		int gewonnen = 0;
 		
-		IntelligentererGeier	bot1 = new IntelligentererGeier();
-		IntelligentererGeier	bot2 = new IntelligentererGeier();
-		Mensch 					bot3 = new Mensch();
-		Geier 					bot4 = new Geier();
-		NoahsBot 				aBotToRuleThemAll = new NoahsBot();
-		TestBot 				xBot = new TestBot();
-		RuleThemAll 			ruleThem = new RuleThemAll();
+		IntelligentererGeier	bot1 	= new IntelligentererGeier();
+		RuleThemAll 			ruleThem= new RuleThemAll();
+		Mensch					mensch	= new Mensch();
 		
 		HolsDerGeier spiel = new HolsDerGeier();
 		spiel.initBots(ruleThem, bot1);
 		try {
-			spiel.ganzesSpiel();
+			for (int i = 0; i < 1000; i++) {
+				spiel.ganzesSpiel();
+				if(spiel.punktstaende[0] > spiel.punktstaende[1]) {
+					gewonnen++;
+				}
+				System.out.println("Von " + i + " Spielen habe ich " + gewonnen + "gewonnen");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
